@@ -1,35 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-function App() {
-  const [count, setCount] = useState(0)
+import Home from './pages/home/Home';
+import Products from './pages/products/products/Products'
+import ProductFamilies from './pages/products/product-families/ProductFamilies'
+import ProductTypes from './pages/products/product-types/ProductTypes'
+import Menus from './pages/menu-creation/menus/Menus'
+import MenuTemplates from './pages/menu-creation/menu-templates/MenuTemplates'
+import MenuCategories from './pages/menu-creation/menu-categories/MenuCategories'
+import Restaurant from './pages/restaurant/restaurant/Restaurant'
+import Login from './auth/login/Login';
+import Register from './auth/register/Register';
+import MainLayout from './layouts/MainLayout';
 
+const App: React.FC = () => {
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Router>
+      <Routes>
+        {/* Rutas con Header y Footer usando MainLayout */}
+        <Route path="/" element={<MainLayout><Home /></MainLayout>} />
 
-export default App
+        {/* Products */}
+        <Route path="/products" element={<MainLayout><Products /></MainLayout>} />
+        <Route path="/products-families" element={<MainLayout><ProductFamilies /></MainLayout>} />
+        <Route path="/products-types" element={<MainLayout><ProductTypes /></MainLayout>} />
+
+        {/* Menus */}
+        <Route path="/menus" element={<MainLayout><Menus /></MainLayout>} />
+        <Route path="/menus-templates" element={<MainLayout><MenuTemplates /></MainLayout>} />
+        <Route path="/menus-categories" element={<MainLayout><MenuCategories /></MainLayout>} />
+
+        {/* Restaurant */}
+        <Route path="/restaurant" element={<MainLayout><Restaurant /></MainLayout>} />
+        
+        {/* Rutas sin Header y Footer */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </Router>
+  );
+};
+
+export default App;
