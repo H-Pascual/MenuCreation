@@ -1,6 +1,5 @@
 import React from 'react';
-import Header from '../components/header/Header'
-import Footer from '../components/footer/Footer'
+import SideMenu from '../components/header/Header'
 
 interface MainLayoutProps {
   children: React.ReactNode
@@ -8,11 +7,13 @@ interface MainLayoutProps {
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
-    <div>
-      <Header />
-      <main>{children}</main>
-      <Footer />
-    </div>
+    <>
+      <SideMenu>
+      <div className="flex-grow-1 p-3">
+        {children}
+      </div>
+      </SideMenu>
+    </>
   );
 };
 
