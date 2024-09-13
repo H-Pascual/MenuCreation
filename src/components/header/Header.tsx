@@ -1,12 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 interface SideMenuProps {
   children: React.ReactNode
 }
 
 const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
-  const [productCollape, setProductCollapse] = useState<boolean>(false)
-  const [menuCollapse, setMenuCollapse] = useState<boolean>(false)
+  const [productCollapse, setProductCollapse] = useState<boolean>(() => {
+    return localStorage.getItem('productCollapse') === 'true'
+  })
+
+  const [menuCollapse, setMenuCollapse] = useState<boolean>(() => {
+    return localStorage.getItem('menuCollapse') === 'true'
+  })
+
+  const location = useLocation()
+
+  useEffect(() => {
+    localStorage.setItem('productCollapse', productCollapse.toString())
+    localStorage.setItem('menuCollapse', menuCollapse.toString())
+  }, [productCollapse, menuCollapse])
 
   return (
     <div className="d-flex">
@@ -17,59 +30,82 @@ const SideMenu: React.FC<SideMenuProps> = ({ children }) => {
         <hr />
         <ul className="nav nav-pills flex-column mb-auto">
           <li className="nav-item">
-            <button
-              className="nav-link text-white d-flex align-items-center justify-content-between"
-              data-bs-toggle="collapse"
-              data-bs-target="#home-collapse"
-              aria-expanded="false"
-            >
+            <a href="/" className={`nav-link text-white ${location.pathname === '/' ? 'active' : ''}`}>
               <i className="bi bi-house-fill me-2"></i>
-              <a href="/" className="link-light d-inline-flex text-decoration-none rounded">Home</a>
-            </button>
+              Home
+            </a>
           </li>
           <li className="nav-item">
             <button
-              className="nav-link text-white d-flex align-items-center justify-content-between"
+              className={`nav-link text-white d-flex align-items-center justify-content-between ${(location.pathname === '/menus' || location.pathname === '/menus-templates' || location.pathname === '/menus-categories') ? 'active' : ''}`}
               data-bs-toggle="collapse"
               data-bs-target="#menus-collapse"
               aria-expanded={menuCollapse}
-              onClick={()=>{setMenuCollapse(!menuCollapse)}}
+              onClick={() => setMenuCollapse(!menuCollapse)}
             >
               <i className="bi bi-qr-code-scan me-2"></i>
               Menus
-              <i className={menuCollapse ? "bi bi-chevron-up ms-2" : "bi bi-chevron-down ms-2"}></i>
+              <i className={menuCollapse ? 'bi bi-chevron-up ms-2' : 'bi bi-chevron-down ms-2'}></i>
             </button>
-            <div className="collapse" id="menus-collapse">
-              <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                <li><a href="/menus" className="link-light d-inline-flex text-decoration-none rounded">Menus</a></li>
-                <li><a href="/menus-templates" className="link-light d-inline-flex text-decoration-none rounded">Templates</a></li>
-                <li><a href="/menus-categories" className="link-light d-inline-flex text-decoration-none rounded">Categories</a></li>
+            <div className={`collapse ${menuCollapse ? 'show' : ''}`} id="menus-collapse">
+              <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small px-4">
+                <li>
+                  <a href="/menus" className={`link-light d-inline-flex text-decoration-none rounded ${location.pathname === '/menus' ? 'text-primary' : ''}`}>
+                    Menus
+                  </a>
+                </li>
+                <li>
+                  <a href="/menus-templates" className={`link-light d-inline-flex text-decoration-none rounded ${location.pathname === '/menus-templates' ? 'text-primary' : ''}`}>
+                    Templates
+                  </a>
+                </li>
+                <li>
+                  <a href="/menus-categories" className={`link-light d-inline-flex text-decoration-none rounded ${location.pathname === '/menus-categories' ? 'text-primary' : ''}`}>
+                    Categories
+                  </a>
+                </li>
               </ul>
             </div>
           </li>
           <li className="nav-item">
             <button
-              className="nav-link text-white d-flex align-items-center justify-content-between"
+              className={`nav-link text-white d-flex align-items-center justify-content-between ${(location.pathname === '/products' || location.pathname === '/products-families' || location.pathname === '/products-categories' || location.pathname === '/products-ingredients') ? 'active' : ''}`}
               data-bs-toggle="collapse"
               data-bs-target="#products-collapse"
-              aria-expanded={productCollape}
-              onClick={()=>{setProductCollapse(!productCollape)}}
+              aria-expanded={productCollapse}
+              onClick={() => setProductCollapse(!productCollapse)}
             >
               <i className="bi bi-box-seam me-2"></i>
               Products
-              <i className={productCollape ? "bi bi-chevron-up ms-2" : "bi bi-chevron-down ms-2"}></i>
+              <i className={productCollapse ? 'bi bi-chevron-up ms-2' : 'bi bi-chevron-down ms-2'}></i>
             </button>
-            <div className="collapse" id="products-collapse">
-              <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                <li><a href="/products" className="link-light d-inline-flex text-decoration-none rounded">Products</a></li>
-                <li><a href="/products-families" className="link-light d-inline-flex text-decoration-none rounded">Families</a></li>
-                <li><a href="/products-categories" className="link-light d-inline-flex text-decoration-none rounded">Categories</a></li>
-                <li><a href="/products-ingredients" className="link-light d-inline-flex text-decoration-none rounded">Ingredients</a></li>
+            <div className={`collapse ${productCollapse ? 'show' : ''}`} id="products-collapse">
+              <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small px-4">
+                <li>
+                  <a href="/products" className={`link-light d-inline-flex text-decoration-none rounded ${location.pathname === '/products' ? 'text-primary' : ''}`}>
+                    Products
+                  </a>
+                </li>
+                <li>
+                  <a href="/products-families" className={`link-light d-inline-flex text-decoration-none rounded ${location.pathname === '/products-families' ? 'text-primary' : ''}`}>
+                    Families
+                  </a>
+                </li>
+                <li>
+                  <a href="/products-categories" className={`link-light d-inline-flex text-decoration-none rounded ${location.pathname === '/products-categories' ? 'text-primary' : ''}`}>
+                    Categories
+                  </a>
+                </li>
+                <li>
+                  <a href="/products-ingredients" className={`link-light text-decoration-none rounded ${location.pathname === '/products-ingredients' ? 'text-primary' : ''}`}>
+                    Ingredients
+                  </a>
+                </li>
               </ul>
             </div>
           </li>
           <li className="nav-item">
-              <a href="/restaurant" className="nav-link text-white">
+            <a href="/restaurant" className={`nav-link text-white ${location.pathname === '/restaurant' ? 'active' : ''}`}>
               <i className="bi bi-briefcase me-2"></i>
               Restaurant
             </a>
