@@ -8,11 +8,16 @@ import ProductIngredients from './pages/products/product-ingredients/ProductIngr
 import Menus from './pages/menu-creation/menus/Menus'
 import MenuTemplates from './pages/menu-creation/menu-templates/MenuTemplates'
 import MenuCategories from './pages/menu-creation/menu-categories/MenuCategories'
-import Restaurant from './pages/restaurant/restaurant/Restaurant'
+import Restaurants from './pages/restaurants/Restaurants/Restaurants'
 import Login from './auth/login/Login';
 import Register from './auth/register/Register';
 import MainLayout from './layouts/MainLayout';
 import Error404 from './error/404';
+import dotenv from '../dotenv'
+
+dotenv.config()
+
+const apiUrl = process.env.API_URL
 
 const App: React.FC = () => {
   return (
@@ -33,7 +38,7 @@ const App: React.FC = () => {
         <Route path="/menus-categories" element={<MainLayout><MenuCategories /></MainLayout>} />
 
         {/* Restaurant */}
-        <Route path="/restaurant" element={<MainLayout><Restaurant /></MainLayout>} />
+        <Route path="/restaurant" element={<MainLayout><Restaurants /></MainLayout>} />
         
         {/* Rutas sin Header y Footer */}
         <Route path="/login" element={<Login />} />
